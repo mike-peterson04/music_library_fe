@@ -1,25 +1,51 @@
-import logo from '../logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Axios from 'axios';
+import SongTable from './songtable'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+constructor(props){
+    super(props);
+    // this.api = Axios.create({
+    //     baseURL:'http://127.0.0.1:8000/',
+    //     timeout: 1000,
+    // })
+    this.songs = false
+    this.state = {
+       songNumber: 0
+   } 
 }
+
+handleSubmit(){
+
+}
+
+async componentDidMount(){
+    try{
+    this.songs= await Axios.get('http://127.0.0.1:8000/music/')
+    this.songs = this.songs.data
+    console.log(this.songs)
+    this.setState({songNumber:(this.songs.length-1)})
+    }
+
+    catch{
+        console.log("api didn't respond")
+    }
+
+}
+
+
+
+render(){
+    if (this.songs !== false){
+    return(
+    <SongTable songs={this.songs}></SongTable>
+    )}
+    console.log("No Data")
+    return("No Data")
+}
+
+}
+
 
 export default App;
