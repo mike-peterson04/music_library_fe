@@ -10,36 +10,61 @@ constructor(props){
     //     baseURL:'http://127.0.0.1:8000/',
     //     timeout: 1000,
     // })
-    this.songs = false
-    this.state = {
-       songNumber: 0
-   } 
+    
+    this.handleDelete = this.handleDelete.bind(this)
+    this.updateSong = this.updateSong.bind(this)
 }
 
-handleSubmit(){
+state = {
+    songs:false,
+    songNumber: 0
+} 
+handleEdit(event,song){
+    event.preventDefault();
 
 }
-
-async componentDidMount(){
+async handleDelete(event,song){
+    event.preventDefault();
     try{
-    this.songs= await Axios.get('http://127.0.0.1:8000/music/')
-    this.songs = this.songs.data
-    console.log(this.songs)
-    this.setState({songNumber:(this.songs.length-1)})
+        await Axios.delete('http://127.0.0.1:8000/music/'+song.id+'/');
+        console.log("api called successfully");
+        this.setState({
+            songNumber: 1
+        });
+        this.updateSong();
+
+    }
+    catch(e){
+        console.log(e.message)
+        console.log("api didn't respond delete")
     }
 
-    catch{
-        console.log("api didn't respond")
-    }
-
+}
+async updateSong(){
+    try{
+        let songs= await Axios.get('http://127.0.0.1:8000/music/')
+        songs = songs.data
+        console.log(this.songs)
+        this.setState({
+            songs:songs,
+            songNumber:(songs.length-1)})
+        }
+    
+        catch{
+            console.log("api didn't respond")
+        }
+}
+async componentDidMount(){
+    this.updateSong()
 }
 
 
 
 render(){
-    if (this.songs !== false){
+    console.log("Rendering happening")
+    if (this.state.songs !== false){
     return(
-    <SongTable songs={this.songs}></SongTable>
+    <SongTable songs={this.state.songs} handleDelete={this.handleDelete} handleEdit={this.handleEdit}></SongTable>
     )}
     console.log("No Data")
     return("No Data")
