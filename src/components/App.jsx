@@ -7,6 +7,7 @@ import AddSong from './addsong';
 class App extends Component {
 constructor(props){
     super(props);
+    
     // this.api = Axios.create({
     //     baseURL:'http://127.0.0.1:8000/',
     //     timeout: 1000,
@@ -16,7 +17,7 @@ constructor(props){
     this.updateSong = this.updateSong.bind(this)
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
 }
 
 state = {
@@ -33,22 +34,25 @@ state = {
     }
 } 
 
-handleChange = (event) => {
-    let value = event.target.value
-    console.log(value);
-    this.setState({
-        [event.target.value]:value
-    });
+// handleChange = (event) => {
+//     let value = event.target.value;
+//     let song = this.state.editSong;
+
+//     console.log(value);
+//     this.setState({
+//         [event.target.name]:value
+//     });
 
 
-};
+// };
+
 
 async handleEditSubmit(event, song){
     event.preventDefault();
     let state = this.state;
     if (song.id === "New Song"){
         try{
-            console.log(await Axios.post('http:127.0.0.1:8000/music/',{
+            console.log(await Axios.post('http://127.0.0.1:8000/music/',{
                 title:song.title,
                 artist:song.artist,
                 album:song.album,
@@ -68,7 +72,7 @@ async handleEditSubmit(event, song){
     }
     else{
         try{
-            console.log(await Axios.put('http:127.0.0.1:8000/music/'+song.id+'/',song));
+            console.log(await Axios.put('http://127.0.0.1:8000/music/'+song.id+'/',song));
             this.updateSong()
             this.setState({
                 songs:state.songs,
@@ -142,7 +146,7 @@ render(){
         }
         else if(this.state.renderType === "add"){
             return(
-                <AddSong song={this.state.editSong} handleEditSubmit={this.handleEditSubmit} handleChange={this.handleChange}/>
+                <AddSong song={this.state.editSong} handleEditSubmit={this.handleEditSubmit}/>
             )
         }
     }
