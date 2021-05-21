@@ -1,5 +1,3 @@
-import React,{Component} from 'react'
-
 function SongTable(props) {
     
     function buildTable(song){
