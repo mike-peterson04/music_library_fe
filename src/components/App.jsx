@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
 import Axios from 'axios';
 import SongTable from './songtable';
 import AddSong from './addsong';
+import 'bootstrap/dist/css/bootstrap.css'
 
 class App extends Component {
 constructor(props){
@@ -141,12 +141,28 @@ render(){
     if (this.state.songs !== false){
         if(this.state.renderType === "table"){
             return(
-                <SongTable songs={this.state.songs} handleDelete={this.handleDelete} handleEdit={this.handleEdit}/>
+                <table align='center' className='table-secondary' width='80%'>
+                    <tbody>
+                        <tr>
+                            <td>
+                            <SongTable songs={this.state.songs} handleDelete={this.handleDelete} handleEdit={this.handleEdit}/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             )
         }
         else if(this.state.renderType === "add"){
             return(
-                <AddSong song={this.state.editSong} handleEditSubmit={this.handleEditSubmit}/>
+                <table align='center' className='table-dark' width='80%'>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <AddSong song={this.state.editSong} handleEditSubmit={this.handleEditSubmit}/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             )
         }
     }
