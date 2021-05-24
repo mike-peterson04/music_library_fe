@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import SongTable from './songtable';
 import AddSong from './addsong';
-import 'bootstrap/dist/css/bootstrap.css'
+import Navbar from './navbar';
+import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
 constructor(props){
@@ -34,22 +35,8 @@ state = {
     }
 } 
 
-// handleChange = (event) => {
-//     let value = event.target.value;
-//     let song = this.state.editSong;
-
-//     console.log(value);
-//     this.setState({
-//         [event.target.name]:value
-//     });
-
-
-// };
-
-
 async handleEditSubmit(event, song){
     event.preventDefault();
-    let state = this.state;
     if (song.id === "New Song"){
         try{
             console.log(await Axios.post('http://127.0.0.1:8000/music/',{
@@ -61,8 +48,6 @@ async handleEditSubmit(event, song){
             }));
             this.updateSong()
             this.setState({
-                songs:state.songs,
-                songNumber: state.songNumber,
                 renderType:"table",
                 editSong:song});
         }
@@ -75,10 +60,17 @@ async handleEditSubmit(event, song){
             console.log(await Axios.put('http://127.0.0.1:8000/music/'+song.id+'/',song));
             this.updateSong()
             this.setState({
-                songs:state.songs,
-                songNumber: state.songNumber,
-                renderType:"table",
-                editSong:song});
+                    renderType:"table",
+                    editSong:{
+                        id:"New Song",
+                        title:"Title",
+                        artist:"Artist",
+                        album:"Album",
+                        release_date:"Release Date",
+                        likes:0
+                    }
+                }
+            );
         }
         catch(e){
             console.log(e.message);
@@ -88,13 +80,9 @@ async handleEditSubmit(event, song){
 
 }
 
-handleEdit(event,song){
+handleEdit(event,song=this.state.editSong){
     event.preventDefault();
-    let state = this.state;
     this.setState({
-        songs:state.songs,
-        songNumber:state.songNumber,
-        editSong:song,
         renderType:"add"
     })
 
@@ -141,15 +129,18 @@ render(){
     if (this.state.songs !== false){
         if(this.state.renderType === "table"){
             return(
-                <table align='center' className='table-secondary' width='80%'>
-                    <tbody>
-                        <tr>
-                            <td>
-                            <SongTable songs={this.state.songs} handleDelete={this.handleDelete} handleEdit={this.handleEdit}/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <Navbar handleEdit={this.handleEdit}/>
+                    <table align='center' className='table-secondary' width='80%'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                <SongTable songs={this.state.songs} handleDelete={this.handleDelete} handleEdit={this.handleEdit}/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             )
         }
         else if(this.state.renderType === "add"){

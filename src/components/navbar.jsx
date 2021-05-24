@@ -1,4 +1,4 @@
-function navbar(){
+function Navbar(props){
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -11,7 +11,7 @@ function navbar(){
                             <a class="nav-link" href="#">All Songs</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#">Add New Song</a>
+                            <a class="nav-link" href="#" onClick={props.handleEdit}>Add New Song</a>
                         </li>
                         <li>
                             <a class="nav-link" href="#">Filter Results</a>
@@ -23,4 +23,4 @@ function navbar(){
         )
 }
 
-export default navbar
+export default Navbar
