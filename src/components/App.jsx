@@ -3,6 +3,7 @@ import Axios from 'axios';
 import SongTable from './songtable';
 import AddSong from './addsong';
 import Navbar from './navbar';
+import FilterTable from './filterTable'
 import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
@@ -16,6 +17,8 @@ constructor(props){
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.updateSong = this.updateSong.bind(this)
+    this.startFilter = this.startFilter.bind(this)
+    this.filterUpdate = this.filterUpdate.bind(this)
     
 }
 
@@ -32,6 +35,19 @@ state = {
         likes:0
     }
 } 
+
+startFilter(){
+    this.setState({renderType:'filter'})
+}
+
+filterUpdate(songs){
+    this.setState(
+        {
+            songs:songs,
+            renderType:"table"
+        }
+    )  
+}
 
 async handleEditSubmit(event, song){
     event.preventDefault();
@@ -134,7 +150,7 @@ render(){
         if(this.state.renderType === "table"){
             return(
                 <div>
-                    <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong}/><br/>
+                    <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong} startFilter ={this.startFilter}/><br/>
                     <table align='center' className='table-secondary' width='80%'>
                         <tbody>
                             <tr>
@@ -150,7 +166,7 @@ render(){
         else if(this.state.renderType === "add"){
             return(
             <div>
-                <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong}/><br/>
+                <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong} startFilter ={this.startFilter}/><br/>
                 <table align='center' className='table-dark' width='80%'>
                     <tbody>
                         <tr>
@@ -163,9 +179,24 @@ render(){
             </div>
             )
         }
+        else if(this.state.renderType === "filter"){
+            return(
+            <div>
+                <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong} startFilter ={this.startFilter}/><br/>
+                <table align='center' className='table-dark' width='80%'>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <FilterTable songs={this.state.songs} filterUpdate={this.filterUpdate}/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>)
+        }
     }
     console.log("No Data")
-    return("No Data")
+    return(<Navbar handleEdit={this.handleEdit} updateSong={this.updateSong} startFilter ={this.startFilter}/>)
 }
 
 }

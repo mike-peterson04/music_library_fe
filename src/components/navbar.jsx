@@ -14,7 +14,7 @@ function Navbar(props){
                             <a class="nav-link" href="#" onClick={props.handleEdit}>Add New Song</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#">Filter Results</a>
+                            <a class="nav-link" href="#" onClick={props.startFilter}>Filter Results</a>
                         </li>
                     </ul>
                 </div>
