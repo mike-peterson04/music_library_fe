@@ -8,7 +8,7 @@ function Navbar(props){
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">All Songs</a>
+                            <a class="nav-link" href="#" onClick={props.updateSong}>All Songs</a>
                         </li>
                         <li>
                             <a class="nav-link" href="#" onClick={props.handleEdit}>Add New Song</a>

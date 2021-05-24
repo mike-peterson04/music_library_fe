@@ -9,16 +9,14 @@ class App extends Component {
 constructor(props){
     super(props);
     
-    // this.api = Axios.create({
-    //     baseURL:'http://127.0.0.1:8000/',
-    //     timeout: 1000,
-    // })
+
     
     this.handleDelete = this.handleDelete.bind(this)
     this.updateSong = this.updateSong.bind(this)
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
-    // this.handleChange = this.handleChange.bind(this)
+    this.updateSong = this.updateSong.bind(this)
+    
 }
 
 state = {
@@ -82,7 +80,11 @@ async handleEditSubmit(event, song){
 
 handleEdit(event,song=this.state.editSong){
     event.preventDefault();
+    let state = this.state;
     this.setState({
+        songs:state.songs,
+        songNumber:state.songNumber,
+        editSong:song,
         renderType:"add"
     })
 
@@ -110,6 +112,7 @@ async updateSong(){
         songs = songs.data
         console.log(this.songs)
         this.setState({
+            renderType:'table',
             songs:songs,
             songNumber:(songs.length-1)})
         }
@@ -126,11 +129,12 @@ async componentDidMount(){
 
 render(){
     console.log("Rendering happening")
+    //check
     if (this.state.songs !== false){
         if(this.state.renderType === "table"){
             return(
                 <div>
-                    <Navbar handleEdit={this.handleEdit}/>
+                    <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong}/><br/>
                     <table align='center' className='table-secondary' width='80%'>
                         <tbody>
                             <tr>
@@ -145,6 +149,8 @@ render(){
         }
         else if(this.state.renderType === "add"){
             return(
+            <div>
+                <Navbar handleEdit={this.handleEdit} updateSong={this.updateSong}/><br/>
                 <table align='center' className='table-dark' width='80%'>
                     <tbody>
                         <tr>
@@ -154,6 +160,7 @@ render(){
                         </tr>
                     </tbody>
                 </table>
+            </div>
             )
         }
     }

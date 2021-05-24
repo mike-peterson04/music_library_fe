@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class AddSong extends Component{
 constructor(props){
     super(props);
-    debugger;
     this.state={
         id:props.song.id,
         title:props.song.title,
