@@ -11,7 +11,7 @@ constructor(props){
         release_date:props.song.release_date
     }
 }    
-
+//this changes the value we have stored in memory for each item as you change it
 handleChange=(event)=>{
     this.setState({
         [event.target.name]:event.target.value

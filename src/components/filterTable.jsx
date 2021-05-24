@@ -10,6 +10,7 @@ class FilterTable extends Component {
         event.preventDefault()
         let filterType = []
         let filterValue = []
+        //validating which checkboxes were checked
         if(event.target.titleBox.checked){
             filterType.push('title')
             filterValue.push(event.target.title.value)
@@ -33,10 +34,12 @@ class FilterTable extends Component {
         for(let i=0;i<filterType.length;i++){
             result = this.songSearch(filterType[i],filterValue[i],result)
         }
+        //calling the app component's function to apply the filter
         this.props.filterUpdate(result)
 
     }
-
+//this function searches through the list of songs and then determines which ones match filterType is a string for what element of the song we are filtering by
+//filterValue should be the specific value we are looking for in that element
     songSearch(filterType,filterValue,songs){
         if (songs[0]===undefined){
             songs=this.props.songs;
@@ -60,7 +63,7 @@ class FilterTable extends Component {
         }
         return songs;
     }
-    
+    //draws the table filter form checkbox and textfield need to be filled out to create filter
     render(){
         return(
             <form onSubmit={(e) => this.filterReturn(e)}>

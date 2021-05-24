@@ -6,12 +6,14 @@ import Navbar from './navbar';
 import FilterTable from './filterTable'
 import 'bootstrap/dist/css/bootstrap.css';
 
+
+//this class serves as a display shell for all other components
 class App extends Component {
 constructor(props){
     super(props);
     
 
-    
+    //binding functions I need to call in other classes or external functions
     this.handleDelete = this.handleDelete.bind(this)
     this.updateSong = this.updateSong.bind(this)
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
@@ -35,11 +37,11 @@ state = {
         likes:0
     }
 } 
-
+//this function will force the page to re-render and will call the filterTable instead of SongTable component
 startFilter(){
     this.setState({renderType:'filter'})
 }
-
+//this function is called from the fiterTable component to redraw the page with the results of the filter we want to apply
 filterUpdate(songs){
     this.setState(
         {
@@ -49,9 +51,11 @@ filterUpdate(songs){
     )  
 }
 
+//this function handles BOTH editing an existing song or creating a new song depending on what the song id field is on form submission (not user editable)
 async handleEditSubmit(event, song){
     event.preventDefault();
     if (song.id === "New Song"){
+        //this will create a new song
         try{
             console.log(await Axios.post('http://127.0.0.1:8000/music/',{
                 title:song.title,
@@ -70,6 +74,7 @@ async handleEditSubmit(event, song){
         }
     }
     else{
+        //this will edit an existing song
         try{
             console.log(await Axios.put('http://127.0.0.1:8000/music/'+song.id+'/',song));
             this.updateSong()
@@ -93,7 +98,7 @@ async handleEditSubmit(event, song){
 
 
 }
-
+//as opposed to actually editing any existing data this function simply redraws the page to show the song editing UI
 handleEdit(event,song=this.state.editSong){
     event.preventDefault();
     let state = this.state;
@@ -105,6 +110,7 @@ handleEdit(event,song=this.state.editSong){
     })
 
 }
+//this delete's a song and grabs the refreshed list of songs from the database
 async handleDelete(event,song){
     event.preventDefault();
     try{
@@ -122,6 +128,7 @@ async handleDelete(event,song){
     }
 
 }
+//this grabs a refreshed list of songs from the database
 async updateSong(){
     try{
         let songs= await Axios.get('http://127.0.0.1:8000/music/')
@@ -137,12 +144,13 @@ async updateSong(){
             console.log("api didn't respond")
         }
 }
+//grabs list of songs on initial load
 async componentDidMount(){
     this.updateSong()
 }
 
 
-
+//draws the page, checks to make sure we have data and what type of components we want to draw at page render
 render(){
     console.log("Rendering happening")
     //check
